@@ -39,7 +39,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(`/api/${config.app.API_VERSION}`, userRoutes);
 app.use(`/api/${config.app.API_VERSION}`, recipeRoutes);
 if (process.env.NODE_ENV === 'production') {
-  app.get("/service-worker.js", (req, res) => {
+  app.get("/client/service-worker.js", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "service-worker.js"));
   });
   app.use('/', express.static('client', { redirect: false }))
