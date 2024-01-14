@@ -1,12 +1,11 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import errorMiddleware from "./middlewares/error.middleware";
-const config = require('./config/config')
+import { ServerConfig } from "./config/config";
+const config: ServerConfig = require('./config/config')
 const helmet = require('helmet')
 const cors = require('cors')
 const app: Express = express()
 const path = require("path")
-// const errorMiddleware = require('./middlewares/error.middleware')
-// const fileUpload = require('express-fileupload')
 // Routes
 const userRoutes = require("./router/user.router");
 const recipeRoutes = require("./router/recipe.router");
@@ -21,13 +20,13 @@ app.use(helmet({
     directives: {
       defaultSrc: [
         "'self'",
-        "https://dev-efues4oz5a3ih7sv.us.auth0.com",
+        config.auth0.issuer,
         "https://lh3.googleusercontent.com",
       ],
       objectSrc: ["'none'"],
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "https: 'unsafe-inline'"],
-      connectSrc: ["'self'", "https://dev-efues4oz5a3ih7sv.us.auth0.com/oauth/token"],
+      connectSrc: ["'self'", config.auth0.issuerToken],
       "img-src": ["'self'", "https: data:"],
       upgradeInsecureRequests: [],
     },
