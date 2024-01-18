@@ -1,18 +1,19 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import errorMiddleware from "./middlewares/error.middleware";
 import { ServerConfig } from "./config/config";
+import { productionStage } from "./utils/constants";
 const config: ServerConfig = require('./config/config')
 const helmet = require('helmet')
 const cors = require('cors')
 const app: Express = express()
 const path = require("path")
 // Routes
-const userRoutes = require("./router/user.router");
-const recipeRoutes = require("./router/recipe.router");
+const userRoutes = require("./core/user/router/user.router");
+const recipeRoutes = require("./core/recipe/router/recipe.router");
 
 app.use(express.json())
 app.use(cors({
-  origin: ['http://localhost:5175']
+  origin: [config.app.CLIENT_URL]
 }))
 app.use(helmet({
   crossOriginResourcePolicy: false,
@@ -38,7 +39,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 })
 app.use(`/api/${config.app.API_VERSION}`, userRoutes);
 app.use(`/api/${config.app.API_VERSION}`, recipeRoutes);
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === productionStage) {
   app.get("/client/service-worker.js", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "service-worker.js"));
   });
