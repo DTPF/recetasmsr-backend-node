@@ -1,10 +1,11 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import UserModel from "../models/user.model";
 import { userRole, adminRole, creatorRole } from "../../../utils/constants";
 import { responseKey, userKey } from "../../responseKey";
+import { Auth0User, RequestUser, User } from "../../../interfaces/user.interface";
 
-export async function registerLoginUser(req: Request, res: Response) {
-	const { user } = req.body
+export async function registerLoginUser(req: RequestUser, res: Response) {
+	const { user }: { user: Auth0User } = req.body
 	if (!user) {
 		return res.status(404).send({ message: userKey.required })
 	}
@@ -46,7 +47,7 @@ export async function registerLoginUser(req: Request, res: Response) {
 	}
 }
 
-export async function updateUser(req: Request | any, res: Response) {
+export async function updateUser(req: RequestUser, res: Response) {
 	if (!req.body.name && !req.body.lastname && !req.body.nickname && !req.body.language) {
 		return res.status(404).send({ message: userKey.required })
 	}
@@ -62,7 +63,7 @@ export async function updateUser(req: Request | any, res: Response) {
 	}
 }
 
-export async function deleteUserSelf(req: Request | any, res: Response) {
+export async function deleteUserSelf(req: RequestUser, res: Response) {
 	try {
 		const userDeleted = await UserModel.findOneAndDelete({ auth0Id: req.auth.payload.sub }).lean().exec()
 		if (!userDeleted) {
@@ -75,7 +76,7 @@ export async function deleteUserSelf(req: Request | any, res: Response) {
 	}
 }
 
-export async function deleteUserAdmin(req: Request | any, res: Response) {
+export async function deleteUserAdmin(req: RequestUser, res: Response) {
 	const { userId } = req.params
 	// Only admin can delete user
 	if (req.user.role !== adminRole) {
@@ -102,7 +103,7 @@ export async function deleteUserAdmin(req: Request | any, res: Response) {
 	}
 }
 
-export async function updateRole(req: Request | any, res: Response) {
+export async function updateRole(req: RequestUser, res: Response) {
 	const { user } = req.body
 	if (!user) {
 		return res.status(404).send({ message: userKey.required })
@@ -138,7 +139,7 @@ export async function updateRole(req: Request | any, res: Response) {
 	}
 }
 
-export async function getUsers(req: Request | any, res: Response) {
+export async function getUsers(req: RequestUser, res: Response) {
 	try {
 		const users = await UserModel.find().lean().exec()
 		users.forEach((user: any) => {
@@ -150,4 +151,4 @@ export async function getUsers(req: Request | any, res: Response) {
 	}
 }
 
-export async function updateUserAvatar(req: Request | any, res: Response) { }
+export async function updateUserAvatar(req: Request, res: Response) { }
