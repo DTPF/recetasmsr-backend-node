@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import UserModel from "../models/user.model";
-import { user as userRole, admin as adminRole, creator as creatorRole } from "../../../utils/constants";
+import { userRole, adminRole, creatorRole } from "../../../utils/constants";
 import { responseKey, userKey } from "../../responseKey";
 
 export async function registerLoginUser(req: Request, res: Response) {
