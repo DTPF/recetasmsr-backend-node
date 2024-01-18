@@ -1,14 +1,12 @@
 import { developmentStage, productionStage } from "../utils/constants"
 const dotenv = require('dotenv')
-
-if (process.env.NODE_ENV === productionStage) {
-  dotenv.config({ path: '.env.production' })
-} else {
-  dotenv.config({ path: '.env.development' })
-}
-
+dotenv.config({ path: process.env.NODE_ENV === productionStage ? '.env.production' : '.env.development' })
 const ENV = process.env.NODE_ENV || developmentStage
-
+// if (process.env.NODE_ENV === productionStage) {
+//   dotenv.config({ path: '.env.production' })
+// } else {
+//   dotenv.config({ path: '.env.development' })
+// }
 export type ServerConfig = {
   app: {
     URL: string,
@@ -21,9 +19,9 @@ export type ServerConfig = {
     PORT_MONGO_DB: string | number
   },
   auth0: {
-    audience: string | undefined,
-    issuer: string | undefined,
-    issuerToken: string | undefined
+    AUDIENCE: string | undefined,
+    ISSUER: string | undefined,
+    ISSUER_TOKEN: string | undefined
   }
 }
 
@@ -44,9 +42,9 @@ const CONFIG: ConfigEnv = {
       PORT_MONGO_DB: process.env.PORT_MONGO_DB || 27017
     },
     auth0: {
-      audience: process.env.AUTH0_AUDIENCE,
-      issuer: process.env.AUTH0_ISSUER,
-      issuerToken: process.env.AUTH0_ISSUER_TOKEN
+      AUDIENCE: process.env.AUTH0_AUDIENCE,
+      ISSUER: process.env.AUTH0_ISSUER,
+      ISSUER_TOKEN: process.env.AUTH0_ISSUER_TOKEN
     },
   },
   production: {
@@ -61,9 +59,9 @@ const CONFIG: ConfigEnv = {
       PORT_MONGO_DB: process.env.PORT_MONGO_DB || 27017
     },
     auth0: {
-      audience: process.env.AUTH0_AUDIENCE,
-      issuer: process.env.AUTH0_ISSUER,
-      issuerToken: process.env.AUTH0_ISSUER_TOKEN
+      AUDIENCE: process.env.AUTH0_AUDIENCE,
+      ISSUER: process.env.AUTH0_ISSUER,
+      ISSUER_TOKEN: process.env.AUTH0_ISSUER_TOKEN
     },
   }
 }

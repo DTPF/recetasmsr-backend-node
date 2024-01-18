@@ -21,13 +21,13 @@ app.use(helmet({
     directives: {
       defaultSrc: [
         "'self'",
-        config.auth0.issuer,
+        config.auth0.ISSUER,
         "https://lh3.googleusercontent.com",
       ],
       objectSrc: ["'none'"],
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "https: 'unsafe-inline'"],
-      connectSrc: ["'self'", config.auth0.issuerToken],
+      connectSrc: ["'self'", config.auth0.ISSUER_TOKEN],
       "img-src": ["'self'", "https: data:"],
       upgradeInsecureRequests: [],
     },
