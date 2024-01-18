@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 const fs = require("fs-extra")
 const path = require("path")
-const db = require("../models")
-const { response500, makeResponse } = require('../utils/makeResponse')
+const db = require("../../modelIndex")
+const { response500, makeResponse } = require('../../../utils/makeResponse')
 
 export function postRecipe(req: Request, res: Response) {
   const recipe = new db.Recipe()
@@ -129,7 +129,7 @@ export function updateImage(req: any, res: Response) {
           return
         }
         (recipeImageNameOld !== undefined) && fs.unlinkSync(filePathOld)
-        res.status(200).send({ code: 200, status: "recipeImage-upload", recipeImageName: fileName })
+        res.status(200).send({ code: 200, status: "recipe-image-upload", recipeImageName: fileName })
       })
     } else {
       res.status(404).send({ code: 404, status: "image-empty", message: "Sube la imágen." })
@@ -149,4 +149,18 @@ export function getRecipeImage(req: Request, res: Response) {
       res.sendFile(path.resolve(filePath))
     }
   })
+}
+
+export async function postIngredientType(req: Request, res: Response) {
+  const { name } = req.body
+  try {
+    const ingredientType = new db.IngredientType({ name })
+    const ingredientTypeStored = await ingredientType.save()
+    return res.status(200).send({ status: "created-successfully", message: "Se ha creado correctamente.", ingredientType: ingredientTypeStored })
+  } catch (err: any) {
+    if (err.code == 11000) {
+      return res.status(400).send({ status: "type-exists", message: 'El tipo de ingrediente ya existe' })
+    }
+    return res.status(500).send({ status: "server-error", message: 'Server error', error: err })
+  }
 }
