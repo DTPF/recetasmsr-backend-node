@@ -4,6 +4,7 @@ import { adminRole } from "../utils/constants";
 import { responseKey, userKey } from "../core/responseKey";
 import { RequestUser, User } from "../interfaces/user.interface";
 import { ServerConfig } from "../config/config";
+import i18next from "i18next";
 const config: ServerConfig = require('../config/config')
 const { auth } = require('express-oauth2-jwt-bearer');
 
@@ -21,6 +22,7 @@ export const is_verified = async (req: RequestUser, res: Response, next: NextFun
   if (findUser.isVerified === false) {
     return res.status(401).send({ message: userKey.notVerified })
   }
+  i18next.changeLanguage(findUser.language ?? 'es');
   req.user = findUser
   next()
 }
@@ -36,6 +38,7 @@ export const ensure_admin = async (req: RequestUser, res: Response, next: NextFu
   if (findUser.isVerified === false) {
     return res.status(401).send({ message: userKey.notVerified })
   }
+  i18next.changeLanguage(findUser.language ?? 'es');
   req.user = findUser
   next()
 }
@@ -45,6 +48,7 @@ export const hydrate = async (req: RequestUser, res: Response, next: NextFunctio
   if (!findUser) {
     return res.status(404).send({ message: userKey.notFound, key: 'hydrate' })
   }
+  i18next.changeLanguage(findUser.language ?? 'es');
   req.user = findUser
   next()
 }

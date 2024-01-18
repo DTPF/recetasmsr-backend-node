@@ -1,15 +1,16 @@
-import { Request } from "express";
+import { Request } from "express"
 
 export interface User {
-  _id: string;
-  auth0Id: string;
-  name: string;
-  email: string;
-  role: string;
-  isVerified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
+  _id: string
+  auth0Id: string
+  name: string
+  email: string
+  role: string
+  isVerified: boolean
+  language: string
+  createdAt: Date
+  updatedAt: Date
+  __v: number
 }
 
 export interface Auth0User {

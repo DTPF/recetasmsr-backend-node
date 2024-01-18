@@ -2,6 +2,9 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import errorMiddleware from "./middlewares/error.middleware";
 import { ServerConfig } from "./config/config";
 import { productionStage } from "./utils/constants";
+import i18next from 'i18next';
+import { englishLang } from "./assets/locale/en";
+import { spanishLang } from "./assets/locale/es";
 const config: ServerConfig = require('./config/config')
 const helmet = require('helmet')
 const cors = require('cors')
@@ -11,6 +14,14 @@ const path = require("path")
 const userRoutes = require("./core/user/router/user.router");
 const recipeRoutes = require("./core/recipe/router/recipe.router");
 
+i18next.init({
+  lng: 'es',
+  // debug: true,
+  resources: {
+    es: { translation: spanishLang },
+    en: { translation: englishLang }
+  }
+});
 app.use(express.json())
 app.use(cors({
   origin: [config.app.CLIENT_URL]
