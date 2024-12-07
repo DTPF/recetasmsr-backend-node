@@ -1,5 +1,6 @@
 export const userKey = {
   createdSuccess: 'user-created-success',
+  updatedSuccess: 'user-updated-success',
   deletedSuccess: 'user-deleted-success',
   required: 'user-required',
   repeatedEmail: 'repeated-email',

@@ -27,6 +27,9 @@ export interface Auth0User {
 export interface RequestUser extends Request {
   user: User
   auth: Auth0Request
+  files: {
+    avatar: { path: string }
+  }
 }
 
 interface Auth0Request {
